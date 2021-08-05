@@ -58,10 +58,10 @@ export const fetchCategories = (query) => {
 };
 
 //Search Api for Products Search by Name
-export const fetchProducts = (query) => {
+export const fetchProducts = (query, category_id) => {
   const endpoint = BASE_URL;
   var baseUrl = new URL(endpoint + "/product/search");
-  var params = { query };
+  var params = { query, category_id };
   baseUrl.search = new URLSearchParams(params).toString();
   return async (dispatch) => {
     const fetchProductsCall = async () => {
@@ -77,7 +77,9 @@ export const fetchProducts = (query) => {
       if (prodData.code === 401) {
         console.log("Error");
       } else {
-        await dispatch(dataSlice.actions.setProducts(prodData.data));
+        await dispatch(
+          dataSlice.actions.setProductsByCategoryId(prodData.data)
+        );
       }
     } catch (error) {
       console.log(error);
@@ -85,10 +87,10 @@ export const fetchProducts = (query) => {
   };
 };
 
-export const fetchProductsByCategoryId = (category_id, sort) => {
+export const fetchProductsByCategoryId = (category_id, sort, query = "") => {
   const endpoint = BASE_URL;
   var baseUrl = new URL(endpoint + "/products");
-  var params = { category_id, sort };
+  var params = { category_id, sort, query };
   baseUrl.search = new URLSearchParams(params).toString();
   return async (dispatch) => {
     const fetchProductsByCategoryIdCall = async () => {
