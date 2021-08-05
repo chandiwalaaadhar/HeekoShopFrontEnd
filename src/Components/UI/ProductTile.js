@@ -1,7 +1,14 @@
+import { Button } from "@material-ui/core";
 import React from "react";
+import { useDispatch } from "react-redux";
 import Card from "./Card";
 import classes from "./ProductTile.module.scss";
+import { dataActions } from "../../store";
 export default function ProductTile(props) {
+  const dispatch = useDispatch();
+  const addtoCartHandler = (id) => {
+    dispatch(dataActions.addtoCartItem(id));
+  };
   return (
     <Card className={classes.container}>
       <h3 className={classes.heading}>{props.data.prod_name}</h3>
@@ -11,6 +18,12 @@ export default function ProductTile(props) {
         <h4>INR {props.data.discounted_price}</h4>
       </span>
       <h6 className={classes.stock_badge}>{props.data.stock}</h6>
+      <Button
+        variant="contained"
+        onClick={() => addtoCartHandler(props.data._id)}
+      >
+        Add to Cart
+      </Button>
     </Card>
   );
 }

@@ -5,6 +5,8 @@ export default function Card(props) {
     <div
       className={`${props.className} ${classes.container}`}
       onClick={props.onClick}
+      onMouseEnter={props.onMouseEnter}
+      onMouseOut={props.onMouseOut}
     >
       {props.children}
     </div>

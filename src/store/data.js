@@ -4,6 +4,7 @@ const initialState = {
   categories: "",
   products: "",
   productsByCategoryId: "",
+  cart: [],
 };
 
 const dataSlice = createSlice({
@@ -18,6 +19,12 @@ const dataSlice = createSlice({
     },
     setProductsByCategoryId: (state, action) => {
       state.productsByCategoryId = action.payload;
+    },
+    addtoCartItem: (state, action) => {
+      state.cart.push(action.payload);
+    },
+    emptyCart: (state, action) => {
+      state.cart = [];
     },
   },
 });
@@ -78,10 +85,10 @@ export const fetchProducts = (query) => {
   };
 };
 
-export const fetchProductsByCategoryId = (category_id) => {
+export const fetchProductsByCategoryId = (category_id, sort) => {
   const endpoint = BASE_URL;
   var baseUrl = new URL(endpoint + "/products");
-  var params = { category_id };
+  var params = { category_id, sort };
   baseUrl.search = new URLSearchParams(params).toString();
   return async (dispatch) => {
     const fetchProductsByCategoryIdCall = async () => {
@@ -107,8 +114,46 @@ export const fetchProductsByCategoryId = (category_id) => {
   };
 };
 
+export const checkoutApi = (items, category_id) => {
+  const endpoint = BASE_URL;
+  var baseUrl = new URL(endpoint + "/purchase/product");
+  const formData = new FormData();
+  for (var i = 0; i < items.length; i++) {
+    formData.append(`product[${i}]`, items[i]);
+  }
+  return async (dispatch) => {
+    const checkoutCall = async () => {
+      const response = await fetch(baseUrl, {
+        method: "POST",
+        body: formData,
+      });
+      console.log(response);
+      if (!response.ok) {
+        throw new Error("something went wrong");
+      }
+
+      const data = response.json();
+
+      return data;
+    };
+
+    try {
+      const uploadData = await checkoutCall();
+      if (uploadData.code === 401) {
+        console.log("Something Went Wrong");
+      } else {
+        await dispatch(dataSlice.actions.emptyCart());
+        await dispatch(fetchProductsByCategoryId(category_id, 0));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 export default dataSlice;
 export const getCategories = (state) => state.data.categories;
 export const getProducts = (state) => state.data.products;
 export const getProductsByCategoryId = (state) =>
   state.data.productsByCategoryId;
+export const getCart = (state) => state.data.cart;
