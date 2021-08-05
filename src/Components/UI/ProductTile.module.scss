@@ -1,0 +1,33 @@
+.container {
+  position: relative;
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 20px;
+  .heading {
+    text-align: center;
+  }
+  .description {
+    text-align: center;
+    color: grey;
+  }
+  .price_container {
+    display: flex;
+    justify-content: space-between;
+    .price {
+      text-decoration: line-through;
+    }
+  }
+  .stock_badge {
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    background-color: chocolate;
+    position: absolute;
+    margin: auto;
+    top: 5px;
+    right: 5px;
+    text-align: center;
+    padding: 0.5rem 0;
+    color: whitesmoke;
+  }
+}

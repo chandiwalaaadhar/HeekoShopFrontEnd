@@ -1,5 +1,25 @@
 .container {
   border-radius: 20px;
-  width: 25%;
+  width: 90%;
   padding: 0.5rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  &:hover {
+    box-shadow: 1px 4px 12px rgb(121, 121, 121);
+    cursor: pointer;
+  }
+  .image {
+    padding-top: 10px;
+    width: 80%;
+    height: fit-content;
+    border-radius: 20px;
+  }
+  .cat_description {
+    text-align: center;
+    color: rgb(88, 88, 88);
+    font-size: small;
+    text-overflow: ellipsis;
+  }
 }
